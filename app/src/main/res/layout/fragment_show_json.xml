@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_horizontal_margin"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="@dimen/activity_horizontal_margin"
+    tools:context="com.caihui.zlzb_test.fragment.ShowJsonFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="服务器Response Json"
+        android:textColor="@color/color_Blue"
+        android:textSize="@dimen/text_size_mid" />
+
+    <TextView
+        android:id="@+id/fg_show_json_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/white_bg_blue_storke_rect_shape" />
+</LinearLayout>
