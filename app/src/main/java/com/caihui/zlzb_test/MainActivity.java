@@ -1,20 +1,25 @@
 package com.caihui.zlzb_test;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.caihui.zlzb_test.bean.JobDtoBean;
+import com.caihui.zlzb_test.bean.JobDtoBeanRes;
+import com.caihui.zlzb_test.bean.JobMiniListReq;
 import com.caihui.zlzb_test.bean.LoginReq;
 import com.caihui.zlzb_test.bean.LoginRes;
 import com.caihui.zlzb_test.bean.NetData;
 import com.caihui.zlzb_test.bean.Res;
-import com.caihui.zlzb_test.constant.Constant;
 import com.caihui.zlzb_test.fragment.ShowJsonFragment;
 import com.caihui.zlzb_test.net.NetWork;
-import com.caihui.zlzb_test.tool.JsonUtil;
-import com.caihui.zlzb_test.tool.SpUtil;
+import com.caihui.zlzb_test.tool.TokenUtil;
 import com.caihui.zlzb_test.widget.MultiState2View;
 import com.jiechic.library.android.widget.MultiStateView;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,18 +27,29 @@ import retrofit2.Response;
 
 public class MainActivity extends BaseActivity {
 
-    private ShowJsonFragment mShowJsonFragment;
-
     private MultiState2View msv;
+    private TextView rtTv;
+    private TextView atTv;
+    private TextView userTv;
 
     @Override
     protected void onInitView() {
         msv = findView(R.id.activity_main_msv);
+        atTv = findView(R.id.main_at);
+        rtTv = findView(R.id.main_rt);
+        userTv = findView(R.id.main_user);
     }
 
     @Override
     protected void onInitData() {
+        updateAtRtView();
+    }
 
+    private void updateAtRtView() {
+        String at = "access_token: " + TokenUtil.getAt();
+        atTv.setText(at);
+        String rt = "refresh_token: " + TokenUtil.getRt();
+        rtTv.setText(rt);
     }
 
     @Override
@@ -62,8 +78,13 @@ public class MainActivity extends BaseActivity {
                     if (response.isSuccessful()) {
                         if (resRes.getCode() == 200 || resRes.getCode() == 1) {
                             toast("登录成功");
-                            SpUtil.save(Constant.SP_AT, resRes.getData().getAccessToken());
-                            SpUtil.save(Constant.SP_RT, resRes.getData().getRefreshToken());
+                            TokenUtil.saveToken(resRes.getData());
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateAtRtView();
+                                }
+                            }, 100);
                         } else {
                             toast(resRes.getMessage());
                         }
@@ -92,17 +113,33 @@ public class MainActivity extends BaseActivity {
     public void showJsonInFragment(NetData data) {
         if (data == null)
             return;
-
-        if (mShowJsonFragment == null)
-            mShowJsonFragment = ShowJsonFragment.instance(data);
-        if (mShowJsonFragment.isAdded()) {
-            mShowJsonFragment.show(data);
-        }
+        ShowJsonFragment mShowJsonFragment = ShowJsonFragment.instance(data);
         mShowJsonFragment.show(getSupportFragmentManager(), "");
     }
 
-    public void json(View view) {
+    //已发布职位接口
+    public void position(View view) {
+        final JobMiniListReq req = new JobMiniListReq();
+        req.setJobStyle(0);
+        req.setPageIndex(1);
+        req.setPageSize(20);
+        req.setStatus("30");
+
+        Call<Res<JobDtoBeanRes>> resCall = NetWork.api.getJobList(req.getQueryMap());
+        msv.setState(MultiStateView.ContentState.LOADING);
+        resCall.enqueue(new Callback<Res<JobDtoBeanRes>>() {
+            @Override
+            public void onResponse(@NonNull Call<Res<JobDtoBeanRes>> call, @NonNull Response<Res<JobDtoBeanRes>> response) {
+                msv.setState(MultiStateView.ContentState.CONTENT);
+                showJsonInFragment(new NetData("职位列表", response));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Res<JobDtoBeanRes>> call, @NonNull Throwable t) {
+                t.printStackTrace();
+                toast("网络异常");
+                msv.setState(MultiStateView.ContentState.CONTENT);
+            }
+        });
     }
-
-
 }

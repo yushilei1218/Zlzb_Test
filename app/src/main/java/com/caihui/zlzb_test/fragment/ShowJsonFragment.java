@@ -110,7 +110,7 @@ public class ShowJsonFragment extends DialogFragment {
             WindowManager.LayoutParams attributes = window.getAttributes();
             DisplayMetrics dm = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-            attributes.width= (int) (dm.widthPixels*0.96f);
+            attributes.width= (int) (dm.widthPixels*0.98f);
             window.setAttributes(attributes);
         }
     }

@@ -15,18 +15,31 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
+        <TextView
+            android:id="@+id/main_user"
+            style="@style/common_tv_style" />
+
+        <TextView
+            android:id="@+id/main_at"
+            style="@style/common_tv_style" />
+
+        <TextView
+            android:id="@+id/main_rt"
+            style="@style/common_tv_style" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="login"
-            android:text="Api  Login"
+            android:text="Api  登录"
             android:textAllCaps="false" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="json"
-            android:text="json" />
+            android:onClick="position"
+            android:text="Api 已发布职位"
+            android:textAllCaps="false" />
     </LinearLayout>
 
 </com.caihui.zlzb_test.widget.MultiState2View>

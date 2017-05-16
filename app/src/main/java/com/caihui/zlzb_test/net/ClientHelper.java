@@ -50,9 +50,7 @@ public class ClientHelper {
         public Response intercept(@NonNull Chain chain) throws IOException {
             Request request = chain.request();
 
-            URL url = request.url().url();
-
-            String bindUrl = bindUrl(url);
+            String bindUrl = bindUrl(request);
 
             Request.Builder builder = request.newBuilder().url(bindUrl);
 
@@ -68,11 +66,17 @@ public class ClientHelper {
             return chain.proceed(builder.build());
         }
 
-        private String bindUrl(URL url) {
+        private String bindUrl(Request request) {
+            URL url = request.url().url();
+            String urlStr = url.toString();
             String r = System.currentTimeMillis() + "";
             String key = AppUtil.getMD5Key(url.getPath(), r);
-            String urlStr = url.toString();
-            return urlStr + "?r=" + r + "&key=" + key;
+
+            if (TextUtils.isEmpty(url.getQuery())) {
+                return urlStr + "?r=" + r + "&key=" + key;
+            } else {
+                return urlStr + "&r=" + r + "&key=" + key;
+            }
         }
     }
 }
