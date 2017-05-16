@@ -6,6 +6,11 @@ package com.caihui.zlzb_test.bean;
  * @desc
  */
 
+/**
+ * 服务器Response common 部分
+ *
+ * @param <T> 接口具体返回的Json数据 实体类类型
+ */
 public class Res<T> {
     private int code;
     private String message;
