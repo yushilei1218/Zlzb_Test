@@ -6,6 +6,9 @@ package com.caihui.zlzb_test.bean;
  * @desc
  */
 
+/**
+ * 已发布职位描述类
+ */
 public class JobDtoBean {
     private int cityId, cqId, filepage, jobId, jobTopStatus, jobType, jobstyle, jobtime, orgId, packages, status, substatus, totalcount;
     String cityName, endDate, jobNumber, jobTitle = "职位名称", jobTypeName, refreshDate, salaryrange, startDate, workyearsrange;

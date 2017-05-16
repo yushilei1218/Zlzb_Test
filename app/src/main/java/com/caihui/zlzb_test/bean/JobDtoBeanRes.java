@@ -8,6 +8,9 @@ import java.util.List;
  * @desc
  */
 
+/**
+ * 已发布职位接口响应
+ */
 public class JobDtoBeanRes {
     private List<JobDtoBean> list;
 }

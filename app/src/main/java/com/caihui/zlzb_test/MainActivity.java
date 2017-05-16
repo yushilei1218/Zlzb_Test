@@ -30,14 +30,15 @@ public class MainActivity extends BaseActivity {
     private MultiState2View msv;
     private TextView rtTv;
     private TextView atTv;
-    private TextView userTv;
 
     @Override
     protected void onInitView() {
         msv = findView(R.id.activity_main_msv);
         atTv = findView(R.id.main_at);
         rtTv = findView(R.id.main_rt);
-        userTv = findView(R.id.main_user);
+
+        setOnClick((View) findView(R.id.main_login));
+        setOnClick((View) findView(R.id.main_position));
     }
 
     @Override
@@ -58,12 +59,19 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * 登录点击事件
+     * 将网络信息实体 展示在Fragment中
      */
-    public void login(View view) {
-        if (msv.isLoading())
+    public void showJsonInFragment(NetData data) {
+        if (data == null)
             return;
+        ShowJsonFragment mShowJsonFragment = ShowJsonFragment.instance(data);
+        mShowJsonFragment.show(getSupportFragmentManager(), "");
+    }
 
+    /**
+     * 登录点击网络请求
+     */
+    public void login() {
         Call<Res<LoginRes>> loginResCall = NetWork.api.login(new LoginReq("szlxy12", "test123456"));
         msv.setState(MultiStateView.ContentState.LOADING);
 
@@ -108,17 +116,9 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * 将网络信息实体 展示在Fragment中
+     * 已发布职位网络请求
      */
-    public void showJsonInFragment(NetData data) {
-        if (data == null)
-            return;
-        ShowJsonFragment mShowJsonFragment = ShowJsonFragment.instance(data);
-        mShowJsonFragment.show(getSupportFragmentManager(), "");
-    }
-
-    //已发布职位接口
-    public void position(View view) {
+    public void position() {
         final JobMiniListReq req = new JobMiniListReq();
         req.setJobStyle(0);
         req.setPageIndex(1);
@@ -141,5 +141,20 @@ public class MainActivity extends BaseActivity {
                 msv.setState(MultiStateView.ContentState.CONTENT);
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (msv.isLoading())
+            return;
+
+        switch (v.getId()) {
+            case R.id.main_login://处理点击 登录网络接口 事件
+                login();
+                break;
+            case R.id.main_position://处理已发布职位 网络
+                position();
+                break;
+        }
     }
 }

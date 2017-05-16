@@ -11,6 +11,9 @@ import java.util.Map;
  * @desc
  */
 
+/**
+ * 已发布职位 请求参数描述类
+ */
 public class JobMiniListReq {
     /**
      * status	String	true	职位状态,多个以逗号分隔

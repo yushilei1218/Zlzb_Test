@@ -16,7 +16,7 @@ import android.widget.Toast;
  * @desc
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     SparseArray<View> mViews = new SparseArray<>();
 
@@ -34,6 +34,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @LayoutRes
     protected abstract int getLayoutId();
+
+    protected void setOnClick(View view) {
+        view.setOnClickListener(this);
+    }
 
     @SuppressWarnings("unchecked")
     public <T> T findView(@IdRes int rid) {
