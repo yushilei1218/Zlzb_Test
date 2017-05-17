@@ -9,8 +9,16 @@ import java.util.List;
  */
 
 /**
- * 已发布职位接口响应
+ * 已发布职位列表接口响应
  */
 public class JobDtoBeanRes {
     private List<JobDtoBean> list;
+
+    public List<JobDtoBean> getList() {
+        return list;
+    }
+
+    public void setList(List<JobDtoBean> list) {
+        this.list = list;
+    }
 }

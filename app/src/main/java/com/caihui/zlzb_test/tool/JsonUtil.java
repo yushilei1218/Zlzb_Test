@@ -8,6 +8,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+
 /**
  * @auther by yushilei.
  * @time 2017/5/15-12:11
@@ -27,7 +33,7 @@ public class JsonUtil {
         return json;
     }
 
-    public static <T> T getObj(String json, Class<T> tClass) {
+    public static <T> T fromJson(String json, Class<T> tClass) {
         T obj = null;
         try {
             obj = new Gson().fromJson(json, tClass);
@@ -51,5 +57,10 @@ public class JsonUtil {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonElement parse = new JsonParser().parse(json);
         return gson.toJson(parse);
+    }
+
+    public static <T> T fromJson(InputStream in, Class<T> tClass) {
+        Reader reader = new BufferedReader(new InputStreamReader(in));
+        return new Gson().fromJson(reader, tClass);
     }
 }

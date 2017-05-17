@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_position_list_test"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.caihui.zlzb_test.ui.PositionListTestActivity">
+
+    <include layout="@layout/tool_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/activity_position_list_test_run"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加载TestCases 并依次请求"
+            android:textAllCaps="false" />
+        <!--运行结果-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_position_list_test_recy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/activity_position_list_test_run"
+            android:padding="5dp"
+            app:layoutManager="LinearLayoutManager" />
+
+        <ProgressBar
+            android:id="@+id/activity_position_list_test_progress"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/ani_loading"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

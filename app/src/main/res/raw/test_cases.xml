@@ -1,0 +1,21 @@
+<TestCases>
+    <!--已发布职位请求参数-->
+    <JobMiniListReq>
+        <PageSize>5</PageSize>
+        <PageIndex>1</PageIndex>
+        <JobStyle>0</JobStyle>
+        <Status>30</Status>
+    </JobMiniListReq>
+    <JobMiniListReq>
+        <PageSize>2</PageSize>
+        <PageIndex>1</PageIndex>
+        <JobStyle>0</JobStyle>
+        <Status>30</Status>
+    </JobMiniListReq>
+    <JobMiniListReq>
+        <PageSize>1</PageSize>
+        <PageIndex>1</PageIndex>
+        <JobStyle>0</JobStyle>
+        <Status>30</Status>
+    </JobMiniListReq>
+</TestCases>

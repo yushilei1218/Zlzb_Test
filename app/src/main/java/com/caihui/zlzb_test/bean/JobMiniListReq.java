@@ -1,6 +1,7 @@
 package com.caihui.zlzb_test.bean;
 
 import com.caihui.zlzb_test.tool.TokenUtil;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,14 +15,23 @@ import java.util.Map;
 /**
  * 已发布职位 请求参数描述类
  */
+@XStreamAlias("JobMiniListReq")
 public class JobMiniListReq {
     /**
      * status	String	true	职位状态,多个以逗号分隔
      * pageIndex	int	true	页码,从1开始
      * pageSize	int	true	页容量
      */
-    private int pageSize = 50, pageIndex, jobStyle;
+    @XStreamAlias("PageSize")
+    private int pageSize = 50;
+    @XStreamAlias("PageIndex")
+    private int pageIndex;
+    @XStreamAlias("JobStyle")
+    private int jobStyle;
+    @XStreamAlias("Status")
     private String status;
+
+
 
     public Map<String, Object> getQueryMap() {
         HashMap<String, Object> map = new HashMap<>();
@@ -35,6 +45,8 @@ public class JobMiniListReq {
         }
         return map;
     }
+
+
 
     public int getPageSize() {
         return pageSize;

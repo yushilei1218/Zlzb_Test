@@ -1,16 +1,9 @@
 package com.caihui.zlzb_test.bean;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.caihui.zlzb_test.tool.JsonUtil;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 

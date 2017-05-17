@@ -1,41 +1,34 @@
 package com.caihui.zlzb_test.net;
 
+/**
+ * @auther by yushilei.
+ * @time 2017/5/17-14:16
+ * @desc
+ */
+
 import com.caihui.zlzb_test.bean.JobDtoBeanRes;
-import com.caihui.zlzb_test.bean.LoginReq;
-import com.caihui.zlzb_test.bean.LoginRes;
 import com.caihui.zlzb_test.bean.Res;
 
 import java.util.Map;
 
-import retrofit2.Call;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
-
-
-/**
- * @auther by yushilei.
- * @time 2017/5/15-10:30
- * @desc
- */
+import rx.Observable;
 
 /**
- * 网络请求 封装
+ * 利用RxJava 网络封装
  */
-
-public class NetWork {
+public class RxNetWork {
     private static final String BASE_URL = "https://api-qa.zhaopin.com";
     public static Api api;
-
-    private NetWork() {
-    }
 
     static {
         Retrofit retrofit = new Retrofit.Builder()
                 .client(ClientHelper.getClient())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .build();
@@ -44,11 +37,7 @@ public class NetWork {
     }
 
     public interface Api {
-        @POST("/passport/login")
-        Call<Res<LoginRes>> login(@Body LoginReq user);
-
         @GET("/ihrapi/job/list")
-        Call<Res<JobDtoBeanRes>> getJobList(@QueryMap Map<String, Object> map);
-
+        Observable<Res<JobDtoBeanRes>> getJobList(@QueryMap Map<String, Object> map);
     }
 }

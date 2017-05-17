@@ -1,12 +1,8 @@
 package com.caihui.zlzb_test.fragment;
 
 
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -20,8 +16,6 @@ import android.widget.TextView;
 import com.caihui.zlzb_test.R;
 import com.caihui.zlzb_test.bean.NetData;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 

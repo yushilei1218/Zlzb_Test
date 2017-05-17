@@ -1,12 +1,13 @@
 package com.caihui.zlzb_test;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.caihui.zlzb_test.bean.JobDtoBean;
 import com.caihui.zlzb_test.bean.JobDtoBeanRes;
 import com.caihui.zlzb_test.bean.JobMiniListReq;
 import com.caihui.zlzb_test.bean.LoginReq;
@@ -15,11 +16,14 @@ import com.caihui.zlzb_test.bean.NetData;
 import com.caihui.zlzb_test.bean.Res;
 import com.caihui.zlzb_test.fragment.ShowJsonFragment;
 import com.caihui.zlzb_test.net.NetWork;
+import com.caihui.zlzb_test.tool.JsonUtil;
 import com.caihui.zlzb_test.tool.TokenUtil;
+import com.caihui.zlzb_test.tool.ToolBarInit;
+import com.caihui.zlzb_test.ui.PositionListTestActivity;
 import com.caihui.zlzb_test.widget.MultiState2View;
+import com.caihui.zlzb_test.xml.TestCases;
+import com.caihui.zlzb_test.xml.XmlUtil;
 import com.jiechic.library.android.widget.MultiStateView;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,12 +37,20 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onInitView() {
+        ToolBarInit.toolBarInit(this, "首页 -登录", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         msv = findView(R.id.activity_main_msv);
         atTv = findView(R.id.main_at);
         rtTv = findView(R.id.main_rt);
 
         setOnClick((View) findView(R.id.main_login));
         setOnClick((View) findView(R.id.main_position));
+        setOnClick((View) findView(R.id.main_jump_position));
     }
 
     @Override
@@ -119,12 +131,11 @@ public class MainActivity extends BaseActivity {
      * 已发布职位网络请求
      */
     public void position() {
-        final JobMiniListReq req = new JobMiniListReq();
-        req.setJobStyle(0);
-        req.setPageIndex(1);
-        req.setPageSize(20);
-        req.setStatus("30");
+        TestCases testCases = XmlUtil.fromXml(getResources().openRawResource(R.raw.test_cases), TestCases.class);
 
+        JobMiniListReq req = testCases.getData().get(0);
+        String s = JsonUtil.toStr(req);
+        Log.i(TAG(), s);
         Call<Res<JobDtoBeanRes>> resCall = NetWork.api.getJobList(req.getQueryMap());
         msv.setState(MultiStateView.ContentState.LOADING);
         resCall.enqueue(new Callback<Res<JobDtoBeanRes>>() {
@@ -147,13 +158,15 @@ public class MainActivity extends BaseActivity {
     public void onClick(View v) {
         if (msv.isLoading())
             return;
-
         switch (v.getId()) {
             case R.id.main_login://处理点击 登录网络接口 事件
                 login();
                 break;
             case R.id.main_position://处理已发布职位 网络
                 position();
+                break;
+            case R.id.main_jump_position://
+                startActivity(new Intent(this, PositionListTestActivity.class));
                 break;
         }
     }

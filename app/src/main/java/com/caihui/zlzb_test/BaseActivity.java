@@ -6,9 +6,12 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.Toast;
+
+import com.caihui.zlzb_test.tool.ToastUtil;
 
 /**
  * @auther by yushilei.
@@ -27,6 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         onInitView();
         onInitData();
     }
+
 
     protected abstract void onInitView();
 
@@ -54,11 +58,10 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
     public void toast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        ToastUtil.toast(msg);
     }
 
     public void toastDebug(String msg) {
-        if (BuildConfig.DEBUG)
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        ToastUtil.toastDebug(msg);
     }
 }
