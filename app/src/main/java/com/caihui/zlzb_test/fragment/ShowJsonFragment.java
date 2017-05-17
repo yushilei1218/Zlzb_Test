@@ -1,6 +1,7 @@
 package com.caihui.zlzb_test.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.caihui.zlzb_test.R;
 import com.caihui.zlzb_test.bean.NetData;
+import com.caihui.zlzb_test.tool.CollectionUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -63,15 +65,65 @@ public class ShowJsonFragment extends DialogFragment {
         TextView reqHeaderTv = (TextView) getView().findViewById(R.id.net_data_req_header);
         TextView resHeaderTv = (TextView) getView().findViewById(R.id.net_data_res_header);
         TextView methodTv = (TextView) getView().findViewById(R.id.net_data_method);
-        methodTv.setText(String.valueOf("方法: " + data.getNetMethod()));
-        reqHeaderTv.setText(shapeHeaderStr("请求头: ", data.getRequestHeadersMap()));
-        resHeaderTv.setText(shapeHeaderStr("响应头: ", data.getResponseHeadersMap()));
-        apiNameTv.setText(String.valueOf("名称: " + data.getName()));
-        resCodeTv.setText(String.valueOf("响应码: " + data.getResponseCode()));
-        durationTv.setText(String.valueOf("耗时: " + data.getDuration() + "毫秒"));
-        urlTv.setText(String.valueOf("Url: " + data.getNetUrl()));
-        String isHttpsStr = data.isHttps() ? "是" : "否";
-        protocolTv.setText(String.valueOf("协议: " + data.getNetProtocol() + "   Https:" + isHttpsStr));
+
+        String netMethod = data.getNetMethod();
+        if (TextUtils.isEmpty(netMethod)) {
+            methodTv.setVisibility(View.GONE);
+        } else {
+            methodTv.setVisibility(View.VISIBLE);
+            methodTv.setText(String.valueOf("方法: " + netMethod));
+        }
+        if (CollectionUtil.isEmpty(data.getRequestHeadersMap())) {
+            reqHeaderTv.setVisibility(View.GONE);
+        } else {
+            reqHeaderTv.setVisibility(View.VISIBLE);
+            reqHeaderTv.setText(shapeHeaderStr("请求头: ", data.getRequestHeadersMap()));
+        }
+
+        if (CollectionUtil.isEmpty(data.getResponseHeadersMap())) {
+            resHeaderTv.setVisibility(View.GONE);
+        } else {
+            resHeaderTv.setVisibility(View.VISIBLE);
+            resHeaderTv.setText(shapeHeaderStr("响应头: ", data.getResponseHeadersMap()));
+        }
+
+        String name = data.getName();
+        if (TextUtils.isEmpty(name)) {
+            apiNameTv.setVisibility(View.GONE);
+        } else {
+            apiNameTv.setVisibility(View.VISIBLE);
+            apiNameTv.setText(String.valueOf("名称: " + name));
+        }
+        if (data.getResponseCode() == 0) {
+            resCodeTv.setVisibility(View.GONE);
+        } else {
+            resCodeTv.setVisibility(View.VISIBLE);
+            resCodeTv.setText(String.valueOf("响应码: " + data.getResponseCode()));
+        }
+        if (data.getDuration() == 0) {
+            durationTv.setVisibility(View.GONE);
+        } else {
+            durationTv.setVisibility(View.VISIBLE);
+            durationTv.setText(String.valueOf("耗时: " + data.getDuration() + "毫秒"));
+        }
+
+        String netUrl = data.getNetUrl();
+        if (TextUtils.isEmpty(netUrl)) {
+            urlTv.setVisibility(View.GONE);
+        } else {
+            urlTv.setText(String.valueOf("Url: " + netUrl));
+        }
+
+        String netProtocol = data.getNetProtocol();
+        if (TextUtils.isEmpty(netProtocol)) {
+            protocolTv.setVisibility(View.GONE);
+        } else {
+            String isHttpsStr = data.isHttps() ? "是" : "否";
+            protocolTv.setVisibility(View.VISIBLE);
+            protocolTv.setText(String.valueOf("协议: " + netProtocol + "   Https:" + isHttpsStr));
+        }
+
+
         String reqStr = TextUtils.isEmpty(data.getRequestJson()) ? "空" : data.getRequestJson();
         reqJsonTv.setText(String.valueOf("请求体 :\n" + reqStr));
         String resStr = TextUtils.isEmpty(data.getResponseJson()) ? "空" : data.getResponseJson();
@@ -100,11 +152,11 @@ public class ShowJsonFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
         Window window = getDialog().getWindow();
-        if (window!=null){
+        if (window != null) {
             WindowManager.LayoutParams attributes = window.getAttributes();
             DisplayMetrics dm = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-            attributes.width= (int) (dm.widthPixels*0.98f);
+            attributes.width = (int) (dm.widthPixels * 0.98f);
             window.setAttributes(attributes);
         }
     }

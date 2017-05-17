@@ -10,12 +10,15 @@ import com.caihui.zlzb_test.R;
 import com.caihui.zlzb_test.adapter.RecyPositionAdapter;
 import com.caihui.zlzb_test.bean.JobDtoBeanRes;
 import com.caihui.zlzb_test.bean.JobMiniListReq;
+import com.caihui.zlzb_test.bean.NetJop;
 import com.caihui.zlzb_test.bean.Res;
 import com.caihui.zlzb_test.net.RxNetWork;
+import com.caihui.zlzb_test.tool.CollectionUtil;
 import com.caihui.zlzb_test.tool.JsonUtil;
 import com.caihui.zlzb_test.tool.ToolBarInit;
 import com.caihui.zlzb_test.xml.TestCases;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import rx.Observable;
@@ -34,8 +37,15 @@ public class PositionListTestActivity extends BaseActivity {
 
     private RecyPositionAdapter recyPositionAdapter;
 
+    private View mStartV;
+    /**
+     * 本次网络请求的数据集合
+     */
+    private List<JobMiniListReq> mReqs;
+
     @Override
     protected void onInitView() {
+
         ToolBarInit.toolBarInit(this, "职位列表网络请求", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,14 +53,18 @@ public class PositionListTestActivity extends BaseActivity {
             }
         });
         mProgressBar = findView(R.id.activity_position_list_test_progress);
+        mStartV = findView(R.id.activity_position_list_test_run);
         RecyclerView mRecycler = findView(R.id.activity_position_list_test_recy);
+
         recyPositionAdapter = new RecyPositionAdapter(this);
         mRecycler.setAdapter(recyPositionAdapter);
-        setOnClick((View) findView(R.id.activity_position_list_test_run));
+        setOnClick(mStartV);
+        mStartV.setSelected(true);
     }
 
     @Override
     protected void onInitData() {
+        //初始化时，加载XML中 case数据
         Observable.just("开始")
                 .map(new Func1<String, List<JobMiniListReq>>() {
                     @Override
@@ -64,7 +78,15 @@ public class PositionListTestActivity extends BaseActivity {
 
                     @Override
                     public void call(List<JobMiniListReq> jobMiniListReqs) {
-                        recyPositionAdapter.replaceAll(jobMiniListReqs);
+                        mReqs = jobMiniListReqs;
+
+                        List<NetJop<JobMiniListReq, Res<JobDtoBeanRes>>> data = new LinkedList<>();
+                        for (JobMiniListReq req : jobMiniListReqs) {
+                            data.add(new NetJop<JobMiniListReq, Res<JobDtoBeanRes>>(req));
+                        }
+                        //展示到列表上面
+                        recyPositionAdapter.replaceAll(data);
+                        mStartV.setSelected(false);
                     }
                 });
     }
@@ -83,11 +105,18 @@ public class PositionListTestActivity extends BaseActivity {
         }
     }
 
+    private int pos = 0;
+
     /**
      * 使用列表中的数据依次进行网络请求
      */
     private void loadCaseAndRun() {
-        Observable.from(recyPositionAdapter.getData())
+        if (mStartV.isSelected() || CollectionUtil.isEmpty(mReqs)) {
+            return;
+        }
+        mStartV.setSelected(true);
+        //将集合请求数据，依次发送 并记录请求结果
+        Observable.from(mReqs)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(new Action0() {
                     @Override
@@ -107,8 +136,11 @@ public class PositionListTestActivity extends BaseActivity {
                 .subscribe(new Action1<Res<JobDtoBeanRes>>() {
                     @Override
                     public void call(Res<JobDtoBeanRes> jobDtoBeanResRes) {
+                        //依次获取到网络数据
+                        recyPositionAdapter.updatePosition(pos++, jobDtoBeanResRes);
                         Log.i(TAG(), JsonUtil.toStr(jobDtoBeanResRes));
                         mProgressBar.setVisibility(View.GONE);
+                        mStartV.setSelected(false);
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -116,6 +148,7 @@ public class PositionListTestActivity extends BaseActivity {
                         throwable.printStackTrace();
                         toast("网络异常");
                         mProgressBar.setVisibility(View.GONE);
+                        mStartV.setSelected(false);
                     }
                 });
 

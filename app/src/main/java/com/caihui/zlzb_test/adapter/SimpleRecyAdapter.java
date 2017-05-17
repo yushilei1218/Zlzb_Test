@@ -72,4 +72,8 @@ public abstract class SimpleRecyAdapter<T, E extends RecyclerView.ViewHolder> ex
     public List<T> getData() {
         return data;
     }
+
+    public Context getContext() {
+        return weak.get();
+    }
 }

@@ -16,7 +16,7 @@ import java.util.Map;
  * 已发布职位 请求参数描述类
  */
 @XStreamAlias("JobMiniListReq")
-public class JobMiniListReq {
+public class JobMiniListReq extends Req {
     /**
      * status	String	true	职位状态,多个以逗号分隔
      * pageIndex	int	true	页码,从1开始
@@ -31,21 +31,18 @@ public class JobMiniListReq {
     @XStreamAlias("Status")
     private String status;
 
-
-
+    /**
+     * 获取请求键值对map
+     */
+    @Override
     public Map<String, Object> getQueryMap() {
-        HashMap<String, Object> map = new HashMap<>();
+        Map<String, Object> map = super.getQueryMap();
         map.put("pageSize", pageSize);
         map.put("pageIndex", pageIndex);
         map.put("jobStyle", jobStyle);
         map.put("status", status);
-        Map<String, String> tokenMap = TokenUtil.getTokenMap();
-        if (tokenMap != null) {
-            map.putAll(tokenMap);
-        }
         return map;
     }
-
 
 
     public int getPageSize() {
