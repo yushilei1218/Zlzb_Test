@@ -20,6 +20,7 @@ import com.caihui.zlzb_test.tool.JsonUtil;
 import com.caihui.zlzb_test.tool.TokenUtil;
 import com.caihui.zlzb_test.tool.ToolBarInit;
 import com.caihui.zlzb_test.ui.PositionListTestActivity;
+import com.caihui.zlzb_test.ui.PtrActivity;
 import com.caihui.zlzb_test.widget.MultiState2View;
 import com.caihui.zlzb_test.xml.TestCases;
 import com.caihui.zlzb_test.xml.XmlUtil;
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity {
         setOnClick((View) findView(R.id.main_login));
         setOnClick((View) findView(R.id.main_position));
         setOnClick((View) findView(R.id.main_jump_position));
+        setOnClick((View) findView(R.id.main_jump_ptr));
     }
 
     @Override
@@ -167,6 +169,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.main_jump_position://
                 startActivity(new Intent(this, PositionListTestActivity.class));
+                break;
+            case R.id.main_jump_ptr:
+                startActivity(new Intent(this, PtrActivity.class));
                 break;
         }
     }

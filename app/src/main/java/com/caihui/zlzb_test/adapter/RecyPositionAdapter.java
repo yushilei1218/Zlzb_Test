@@ -72,7 +72,7 @@ public class RecyPositionAdapter extends SimpleRecyAdapter<NetJop<JobMiniListReq
         final TextView resParamsTv;
         int pos;
 
-        public PVH(View itemView) {
+        PVH(View itemView) {
             super(itemView);
             reqParamsTv = findV(R.id.position_item_req);
             resParamsTv = findV(R.id.position_item_res);

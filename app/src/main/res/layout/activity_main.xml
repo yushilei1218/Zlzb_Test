@@ -41,6 +41,13 @@
             android:layout_height="wrap_content"
             android:text="跳转至职位测试页面"
             android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/main_jump_ptr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="跳转至PTR页面"
+            android:textAllCaps="false" />
     </LinearLayout>
 
 </com.caihui.zlzb_test.widget.MultiState2View>

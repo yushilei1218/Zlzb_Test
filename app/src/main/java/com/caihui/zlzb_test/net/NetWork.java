@@ -27,7 +27,7 @@ import retrofit2.http.QueryMap;
  */
 
 public class NetWork {
-    private static final String BASE_URL = "https://api-qa.zhaopin.com";
+    private static final String BASE_URL = "https://apipre.zhaopin.com";
     public static Api api;
 
     private NetWork() {
@@ -49,6 +49,5 @@ public class NetWork {
 
         @GET("/ihrapi/job/list")
         Call<Res<JobDtoBeanRes>> getJobList(@QueryMap Map<String, Object> map);
-
     }
 }
